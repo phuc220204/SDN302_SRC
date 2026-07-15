@@ -1,0 +1,43 @@
+# ==========================================
+# SDN302 Ultimate Source Kit - Git Ignore
+# ==========================================
+
+# 1. Thư mục cài đặt thư viện (BẮT BUỘC CHẶN - cực nặng và sinh tự động)
+node_modules/
+jspm_packages/
+web_modules/
+
+# 2. File Log hệ thống và Debug khi crash
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# 3. File cấu hình riêng của các Editor/IDE (Tránh xung đột giao diện)
+.idea/
+.vscode/brackets.json
+.vscode/project.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 4. File rác tự sinh của Hệ điều hành
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# 5. Thư mục build/đóng gói (nếu có phát sinh sau này)
+dist/
+build/
+out/
+
+# ==========================================
+# LƯU Ý: Không thêm .env vào đây theo yêu cầu 
+# để lưu trữ template kết nối database của Kit!
+# ==========================================
