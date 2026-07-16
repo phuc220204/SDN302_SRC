@@ -25,12 +25,15 @@ const viewLogin = async (req, res, next) => {
     if (!account || !(await bcrypt.compare(pw, account.pw))) {
       return res.status(400).render('login', { error: 'Invalid username or password' });
     }
-    const token = generateToken({ id: account._id, us: account.us });
-    res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+    req.session.user = { id: account._id, us: account.us };
     return res.redirect('/view/residents');
   } catch (err) {
     next(err);
   }
 };
 
-module.exports = { apiLogin, showLogin, viewLogin };
+const logout = (req, res) => {
+  req.session.destroy(() => res.redirect('/auth/signin'));
+};
+
+module.exports = { apiLogin, showLogin, viewLogin, logout };

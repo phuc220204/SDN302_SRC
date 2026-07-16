@@ -6,7 +6,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const logger = require('morgan');
 
 const connectDB = require('./config/db');
@@ -26,7 +26,18 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());                          // parse JSON body (Postman)
 app.use(express.urlencoded({ extended: false })); // parse form body (view)
-app.use(cookieParser());                          // đọc JWT từ cookie cho view
+
+// Session chỉ lưu TRẠNG THÁI ĐĂNG NHẬP cho view (Task 03).
+// KHÔNG bao giờ lưu JWT ở đây — đề SP26 cấm "store the JWT in cookies or session storage".
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60 * 60 * 1000 },
+  })
+);
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ---------------- [ĐỔI THEO ĐỀ] route prefix ----------------

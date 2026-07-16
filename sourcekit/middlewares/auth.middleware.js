@@ -1,36 +1,25 @@
 const jwt = require('jsonwebtoken');
 
-// HYBRID: lấy token từ header "Authorization: Bearer xxx" (Postman/Task 02)
-// HOẶC từ cookie "token" (browser/Task 03). 1 middleware dùng cho cả 2 task.
-const getToken = (req) => {
+// ============ TASK 02 — bảo vệ REST API ============
+// JWT CHỈ đọc từ header "Authorization: Bearer <token>".
+// Không đọc/ghi cookie: đề SP26 ghi rõ "Do not store the JWT in cookies or session storage".
+const protectApi = (req, res, next) => {
   const header = req.headers.authorization;
-  if (header && header.startsWith('Bearer ')) return header.split(' ')[1];
-  return (req.cookies && req.cookies.token) || null;
-};
-
-const verifyCore = (req) => {
-  const token = getToken(req);
-  if (!token) return { error: 'No token provided' };
+  const token = header && header.startsWith('Bearer ') ? header.split(' ')[1] : null;
+  if (!token) return res.status(401).json({ message: 'No token provided' });
   try {
-    return { user: jwt.verify(token, process.env.JWT_SECRET) };
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    next();
   } catch (err) {
-    return { error: 'Invalid or expired token' };
+    return res.status(401).json({ message: 'Invalid or expired token' });
   }
 };
 
-// Bảo vệ REST API -> fail trả JSON 401 (đúng chuẩn để Postman test)
-const protectApi = (req, res, next) => {
-  const { user, error } = verifyCore(req);
-  if (error) return res.status(401).json({ message: error });
-  req.user = user;
-  next();
-};
-
-// Bảo vệ view -> fail redirect về trang login. [ĐỔI THEO ĐỀ] path login
+// ============ TASK 03 — bảo vệ view ============
+// Chỉ kiểm tra trạng thái đăng nhập trong session (session KHÔNG chứa JWT).
+// Fail thì redirect về trang login. [ĐỔI THEO ĐỀ] path login view.
 const protectView = (loginPath = '/auth/signin') => (req, res, next) => {
-  const { user, error } = verifyCore(req);
-  if (error) return res.redirect(loginPath);
-  req.user = user;
+  if (!req.session || !req.session.user) return res.redirect(loginPath);
   next();
 };
 

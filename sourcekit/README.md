@@ -1,4 +1,4 @@
-# SDN302 Source Kit v0.1.0
+# SDN302 Source Kit v0.2.0
 
 Kit tái sử dụng cho các đề PE dạng: **3 collections (cha + con + account), JWT REST API, view CRUD với modal**. Kit được viết sẵn theo đề SU25 (Residents) làm bản mẫu — gặp đề mới chỉ cần đổi tên field/route theo bảng dưới.
 
@@ -11,7 +11,7 @@ server.js                  # dùng khi KHÔNG xài generator (node server.js)
 config/db.js               # connect MongoDB
 models/                    # account + cha (apartment) + con (resident) + index.js
 middlewares/
-  auth.middleware.js       # protectApi (Bearer/JSON 401) + protectView (cookie/redirect) — HYBRID
+  auth.middleware.js       # protectApi (JWT Bearer header) + protectView (session) — JWT KHONG vao cookie
   errorHandler.js          # ValidationError/E11000/CastError -> 400, còn lại 500
 controllers/
   auth.controller.js       # apiLogin (JWT JSON) + showLogin + viewLogin (cookie)
@@ -48,7 +48,7 @@ VSCode → `Ctrl+Shift+P` → **Snippets: Configure Snippets** → **New Global 
 
 | # | File | Sửa gì |
 |---|---|---|
-| 1 | `.env` | Tên DB + JWT secret **đúng format đề** |
+| 1 | `.env` | Tên DB + JWT secret **đúng format đề** (SP26 `!` / SU25 `!!` / FA25 `!@`) + SESSION_SECRET |
 | 2 | `models/*.model.js` | Tên field + min/max + tên model/collection + chuỗi `ref` |
 | 3 | `models/index.js`, `utils/seed.js` | Tên model + tên file JSON |
 | 4 | `app.js` | 3 dòng mount route prefix (`/api/...`, `/view/...` hoặc `/page/...`) |

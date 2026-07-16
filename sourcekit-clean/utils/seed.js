@@ -30,8 +30,9 @@ const revive = (value) => {
       const docs = revive(JSON.parse(fs.readFileSync(filePath, 'utf8')));
       await Model.deleteMany({});
       await Model.insertMany(docs);
-      console.log(`Seeded ${docs.length} docs -> ${Model.collection.name}`);
+      console.log(`Seeded ${docs.length} docs -> collection "${Model.collection.name}"`);
     }
+    console.log('Seed completed.');
   } catch (err) {
     console.error('Seed error:', err.message);
   } finally {

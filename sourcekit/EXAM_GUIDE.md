@@ -7,7 +7,7 @@ Ví dụ theo đề SU25, StudentCode **SE181834**. Đề khác thì thay tên t
 ## GIAI ĐOẠN 0 — Đọc đề (5 phút, KHÔNG ĐƯỢC BỎ)
 
 Gạch chân/ghi ra giấy 6 thứ (giữa các đề chúng LUÔN đổi):
-1. Tên project: `SDN302_PE_SU25_SE181834` (copy nguyên văn, kể cả typo của đề)
+1. Tên project: `SDN302_PE_SU5_SE181834` (copy nguyên văn, kể cả typo của đề)
 2. Tên DB: `SDN302_PE_SU25_SE181834DB`
 3. Format JWT secret: `SE181834!!` (SU25 dùng `!!`; FA25 dùng `!@` — nhìn kỹ ví dụ trong đề)
 4. Route sinh JWT (API) vs route login view — **SU25: API=/auth/login, view=/auth/signin; FA25 NGƯỢC LẠI**

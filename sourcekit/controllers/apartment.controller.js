@@ -1,7 +1,7 @@
 const db = require('../models');
 
 // CRUD REST API cho collection "cha" (Task 02).
-// [ĐỔI THEO ĐỀ]: đổi db.Apartment/db.Resident + danh sách field.
+// [ĐỔI THEO ĐỀ]: đổi db.Apartment/db.Resident + field ref trong delete-guard.
 
 // [GET] /api/apartments
 const getAll = async (req, res, next) => {
@@ -21,10 +21,11 @@ const getById = async (req, res, next) => {
 };
 
 // [POST] /api/apartments
+// Dùng { ...req.body } thay vì destructure từng field: Mongoose strict mode tự loại
+// field lạ, nên spread an toàn và KHÔNG BAO GIỜ sót field khi chuyển sang đề khác.
 const create = async (req, res, next) => {
   try {
-    const { apartmentName, totalOfFloors } = req.body; // [ĐỔI THEO ĐỀ] fields
-    const apartment = await db.Apartment.create({ apartmentName, totalOfFloors });
+    const apartment = await db.Apartment.create({ ...req.body });
     res.status(201).json({ status: 'success', data: apartment });
   } catch (err) { next(err); }
 };
@@ -32,10 +33,9 @@ const create = async (req, res, next) => {
 // [PUT] /api/apartments/:id
 const update = async (req, res, next) => {
   try {
-    const { apartmentName, totalOfFloors } = req.body; // [ĐỔI THEO ĐỀ] fields
     const apartment = await db.Apartment.findByIdAndUpdate(
       req.params.id,
-      { apartmentName, totalOfFloors },
+      { ...req.body },
       { new: true, runValidators: true } // runValidators: update cũng phải qua schema
     );
     if (!apartment) return res.status(404).json({ message: 'Apartment not found' });

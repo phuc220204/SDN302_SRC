@@ -5,6 +5,7 @@ const c = require('../controllers/resident.controller');
 router.use(protectView('/auth/signin')); // [ĐỔI THEO ĐỀ] path login view
 
 router.get('/', c.list);
+router.get('/:id', c.detail);    // đề yêu cầu route /:id -> mở form update của item
 router.post('/', c.create);
 router.post('/:id', c.update);   // form HTML không gửi được PUT -> dùng POST
 router.delete('/:id', c.remove); // gọi từ fetch() nên DELETE được

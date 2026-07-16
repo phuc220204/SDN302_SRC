@@ -8,7 +8,10 @@
 </head>
 <body class="bg-light">
 <div class="container py-4">
-  <h1 class="text-center mb-4">Resident List</h1>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="m-0">Resident List</h1>
+    <a class="btn btn-outline-secondary btn-sm" href="/auth/logout">Logout</a>
+  </div>
 
   <%# Hiển thị lỗi create/update (unique, min/max...) %>
   <% if (error) { %>
@@ -159,6 +162,13 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  <%# Vào thẳng /view/residents/:id -> mở sẵn modal Edit của item đó (đề yêu cầu route /:id) %>
+  <% if (editId) { %>
+    const editEl = document.getElementById('edit-<%= editId %>');
+    if (editEl) new bootstrap.Modal(editEl).show();
+  <% } %>
+</script>
 <script>
   // YÊU CẦU ĐỀ: confirm trước khi xóa + notify kết quả sau khi xóa
   async function deleteResident(id, name) {
